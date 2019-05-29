@@ -9,14 +9,14 @@ function usage() {
 
     echo -e "\nERROR: Missing SRA accessions. \n" \
             "Make sure to provide one (or more) SRA run numbers separated by commas \n\n" \
-            "Usage: $0 -s SRR10001,SRR10002,SRR..." \
+            "Usage: $0 -s SRR10001,SRR10002,SRR... \n\n" \
             "Optional parameters: \n" \
-                  "-o (ouptut directory for saving the SRA files at the end; [default=current folder])" \
+                  "-o (ouptut directory for saving the SRA files at the end; [default=current folder]) \n" \
                   "-m (maximum amount of memory to use [in GB]; [default=16] ) \n" \
                   "-n (number of CPUs/processors/cores to use; [default=use all available]) \n" \
-                  "-t (temporary directory for storing temp files; [default='/tmp/'])"
+                  "-t (temporary directory for storing temp files; [default='/tmp/']) \n\n"
             "Example of a complex run: \n" \
-            "$0 -SRR1001,SRR10002 -d ~/Desktop/sra_files/ -m 30 -n 6 -t /tmp/ \n\n" \
+            "$0 -SRR1001,SRR10002 -o ~/Desktop/sra_files/ -m 30 -n 6 -t /tmp/ \n\n" \
             "Exiting program. Please retry with corrected parameters..." >&2; exit 1;
 }
 
