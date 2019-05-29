@@ -23,7 +23,7 @@ function usage() {
 #==================================================================================================#
 # Make sure the pipeline is invoked correctly, with project and sample names
 #==================================================================================================#
-    while getopts "s:d:m:n:" arg;
+    while getopts "s:d:m:n:t:" arg;
         do
         	case ${arg} in
 
@@ -46,11 +46,24 @@ function usage() {
                     NUM_THREADS=${OPTARG}
                         ;;
 
+                t ) # set temporary directory
+                    TEMP_DIR=${OPTARG}
+                        ;;
+
                 * ) # Display help
         		    usage
         		     	;;
         	esac
         done; shift $(( OPTIND-1 ))
+
+#==================================================================================================#
+# Check that necessary software is installed
+#==================================================================================================#
+command -v fasterq-dump > /dev/null || \
+{   echo -e "ERROR: This requires 'fasterq-dump' from the NCBI sratoolkit, but it could not found. \n" \
+        "Please install this application from https://github.com/ncbi/sra-tools/wiki/Downloads . \n" \
+        "Exiting..." >&2; exit 6
+    }
 
 #==================================================================================================#
 # Process parameters: use the user-provided parameters above to create variable names that can be
