@@ -142,7 +142,7 @@ command -v fasterq-dump > /dev/null || \
 #==================================================================================================#
 # Download fastq files from the SRA
 #==================================================================================================#
-for SAMPLE in ${SAMPLES}
+for SAMPLE in ${ALL_SAMPLES}
    do \
       fasterq-dump \
       --split-3 \
