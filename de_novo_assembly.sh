@@ -14,10 +14,10 @@ function usage() {
             "Usage in unpaired mode: \n" \
             "$0 -p dna|rna -u path/to/unpaired_reads.fq \n\n" \
             "Optional parameters: \n" \
-                  "-o (directory for saving the files at the end; [default=current folder])" \
+                  "-o (directory for saving the files at the end; [default=current folder]) \n" \
                   "-m (maximum amount of memory to use [in GB]; [default=16] ) \n" \
                   "-n (number of CPUs/processors/cores to use; [default=use all available]) \n" \
-                  "-t (temporary directory for storing temp files; [default='/tmp/'])"
+                  "-t (temporary directory for storing temp files; [default='/tmp/']) \n"
             "Example of a complex run: \n" \
             "$0 -SRR1001,SRR10002 -d ~/Desktop/sra_files/ -m 30 -n 6 -t /tmp/ \n\n" \
             "Exiting program. Please retry with corrected parameters..." >&2; exit 1;
@@ -82,17 +82,19 @@ function usage() {
 #==================================================================================================#
 # Check that necessary software is installed
 #==================================================================================================#
-{ command -v rnaspades.py > /dev/null || command -v spades.py > /dev/null } || \
+{ command -v rnaspades.py > /dev/null || \
+  command -v spades.py > /dev/null 
+} || \
 {   echo -e "ERROR: This requires 'spades' or 'rnaspades' de novo assemblers, but it could not found. \n" \
         "Please install these applications. \n" \
         "Exiting..." >&2; exit 6
-    }
+}
 
 #==================================================================================================#
 # Process parameters: use the user-provided parameters above to create variable names that can be
 #                     called in the rest of the pipeline
 #==================================================================================================#
-
+    
     #==============================================================================================#
     #  Make sure required arguments are provided
     #==============================================================================================#
@@ -102,12 +104,12 @@ function usage() {
      usage
     fi
 
-    if { [[ -z ${FORWARD_READS} ]] && [[ -z ${REVERSE_READS} ]] } && \
-         [[ -z ${UNPAIRED_READS} ]]; then
+    if { [[ -z ${FORWARD_READS} ]] && [[ -z ${REVERSE_READS} ]] 
+       } && [[ -z ${UNPAIRED_READS} ]] ; then
              usage
              echo "No complete library of reads provided. Exiting..."
              exit 9
-
+    fi
     #==============================================================================================#
     # Output directory
     #==============================================================================================#
@@ -124,7 +126,7 @@ function usage() {
     if [[ -z "${TEMP_DIR}" ]]; then
         TEMP_DIR="/tmp/"
     fi
-
+    
     #==============================================================================================#
     # Set up number of CPUs to use and RAM
     #==============================================================================================#
@@ -150,10 +152,10 @@ function usage() {
     fi
 
     # As a check to the user, print the project name and sample numbers to the screen
-    echo "SRA sample accessions: ${ALL_SAMPLES[@]}"
     echo "Memory to use: ${MEMORY_TO_USE}"
     echo "Number of processors to use: ${NUM_THREADS}"
 #==================================================================================================#
+
 
 function de_novo_assembly() {
     #==============================================================================================#
@@ -161,31 +163,32 @@ function de_novo_assembly() {
     #==============================================================================================#
 
     # Paired reads
-    if { [[ ! -z ${FORWARD_READS} ]] && \
-         [[ ! -z ${REVERSE_READS }]] }; then
+    if { [[ ! -z ${FORWARD_READS} ]] && [[ ! -z ${REVERSE_READS} ]] 
+       }; then
 
         ${SPADES_PROGRAM} \
         -o ${OUTPUT_DIRECTORY} \
-        -1 ${FORWARD_READS \
+        -1 ${FORWARD_READS} \
         -2 ${REVERSE_READS} \
         --threads ${NUM_THREADS} \
         -m ${MEMORY_TO_USE} \
-        --tmp-dir ${TEMP_DIR};
+        --tmp-dir ${TEMP_DIR} ;
 
     # Unpaired reads
-    elif [[ ! -z ${UNPAIRED_READS} ]]; then
+    elif [[ ! -z ${UNPAIRED_READS} ]] ; then
         ${SPADES_PROGRAM} \
         -o ${OUTPUT_DIRECTORY} \
         -s ${UNPAIRED_READS} \
         --threads ${NUM_THREADS} \
         -m ${MEMORY_TO_USE} \
-        --tmp-dir ${TEMP_DIR};
+        --tmp-dir ${TEMP_DIR} ;
 
     else
-        echo "Encountered unknown problem when trying to run de novo assembly."
-        echo "Could not determine library type (paired or unpaired). Exiting..."
-        usage
+        echo "Encountered unknown problem when trying to run de novo assembly.";
+        echo "Could not determine library type (paired or unpaired). Exiting...";
+        usage ;
         exit 9
+    fi
     #==============================================================================================#
 }
 
@@ -193,8 +196,8 @@ function de_novo_assembly() {
 # Run the de novo aseembly
 #==================================================================================================#
 de_novo_assembly
-#==================================================================================================#
 
+exit 
 #==================================================================================================#
 # Program complete
 #==================================================================================================#
