@@ -11,7 +11,7 @@ function usage() {
             "Make sure to provide one (or more) SRA run numbers separated by commas \n\n" \
             "Usage: $0 -s SRR10001,SRR10002,SRR..." \
             "Optional parameters: \n" \
-                  "-d (directory for saving the SRA files at the end; [default=current folder])" \
+                  "-o (ouptut directory for saving the SRA files at the end; [default=current folder])" \
                   "-m (maximum amount of memory to use [in GB]; [default=16] ) \n" \
                   "-n (number of CPUs/processors/cores to use; [default=use all available]) \n" \
                   "-t (temporary directory for storing temp files; [default='/tmp/'])"
@@ -23,7 +23,7 @@ function usage() {
 #==================================================================================================#
 # Make sure the pipeline is invoked correctly, with project and sample names
 #==================================================================================================#
-    while getopts "s:d:m:n:t:" arg;
+    while getopts "s:o:m:n:t:" arg;
         do
         	case ${arg} in
 
@@ -33,7 +33,7 @@ function usage() {
                     ALL_SAMPLES=(${OPTARG}) # call this when you want every individual sample
                         ;;
 
-                d ) # set output directory, for where to save files to
+                o ) # set output directory, for where to save files to
                     OUTPUT_DIRECTORY=${OPTARG}
                         ;;
 
