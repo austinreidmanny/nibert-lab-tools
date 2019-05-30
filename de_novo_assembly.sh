@@ -17,7 +17,7 @@ function usage() {
                   "-o (directory for saving the files at the end; [default=current folder]) \n" \
                   "-m (maximum amount of memory to use [in GB]; [default=16] ) \n" \
                   "-n (number of CPUs/processors/cores to use; [default=use all available]) \n" \
-                  "-t (temporary directory for storing temp files; [default='/tmp/']) \n"
+                  "-t (temporary directory for storing temp files; [default='/tmp/']) \n" \
             "Example of a complex run: \n" \
             "$0 -SRR1001,SRR10002 -d ~/Desktop/sra_files/ -m 30 -n 6 -t /tmp/ \n\n" \
             "Exiting program. Please retry with corrected parameters..." >&2; exit 1;
