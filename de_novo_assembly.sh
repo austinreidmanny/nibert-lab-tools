@@ -88,8 +88,8 @@ function usage() {
                     NUM_THREADS=${OPTARG}
                         ;;
 
-                t ) # set temporary directory
-                    TEMP_DIR=${OPTARG}
+                t ) # set temporary directory (put in a random subdirectory to avoid conflicts if running in parallel)
+                    TEMP_DIR=${OPTARG}/${RANDOM}
                         ;;
 
                 * ) # Display help
@@ -133,8 +133,11 @@ function usage() {
     # Output directory
     #==============================================================================================#
 
-    # If user didn't provide out dir, then check to see if there's an
-    # SRA_DIR environmental variable, which I set on the lab iMac; if not, just use current directory
+    # If output directory is provided, make sure it exists; if not provided, just use current dir
+    if [[ ! -z "${OUTPUT_DIRECTORY}" ]]; then
+    	mkdir -p ${OUTPUT_DIRECTORY}
+    fi
+
     if [[ -z "${OUTPUT_DIRECTORY}" ]]; then
         OUTPUT_DIRECTORY="./"
     fi
@@ -143,7 +146,7 @@ function usage() {
     # Temporary directory
     #==============================================================================================#
     if [[ -z "${TEMP_DIR}" ]]; then
-        TEMP_DIR="/tmp/"
+        TEMP_DIR="/tmp/${RANDOM}"
     fi
     
     #==============================================================================================#
