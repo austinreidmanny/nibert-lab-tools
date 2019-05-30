@@ -56,8 +56,27 @@ function usage() {
                     UNPAIRED_READS=(${OPTARG})
                         ;;
 
-                o ) # set output directory, for where to save files to
-                    OUTPUT_DIRECTORY=${OPTARG}
+                o ) # set output directory, for where to save files to; files will be in a subfolder with the name of the reads
+                    USER_PROVIDED_OUTPUT_DIRECTORY=${OPTARG}
+
+                    if [[ ! -z ${FORWARD_READS} ]] ; then
+                       READS_NAME=`echo ${FORWARD_READS} | sed 's/_[A-Z]*1.f[a-z]*q//'`
+                       
+                       if [[ -z ${READS_NAME} ]]; then
+                           READS_NAME=${FORWARD_READS}
+                       fi
+
+                    elif [[ ! -z ${UNPAIRED_READS} ]] ; then
+                       READS_NAME=`echo ${UNPAIRED_READS} | sed 's/.f[a-z]*q//'` 
+                       
+                       if [[ -z ${READS_NAME} ]]; then
+                           READS_NAME=${UNPAIRED_READS}
+                       fi  
+                    
+                    else
+                        usage; exit 10
+                    fi
+                       OUTPUT_DIRECTORY=${USER_PROVIDED_OUTPUT_DIRECTORY}/${READS_NAME}
                         ;;
 
                 m ) # set max memory to use (in GB; if any letters are entered, discard those)
@@ -197,7 +216,6 @@ function de_novo_assembly() {
 #==================================================================================================#
 de_novo_assembly
 
-exit 
 #==================================================================================================#
 # Program complete
 #==================================================================================================#
