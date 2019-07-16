@@ -32,7 +32,7 @@ function usage() {
 
                 f ) # Path to input file
                     INPUT_FILE=${OPTARG}
-                    SAMPLE_NAME=$(basename "${INPUT_FILENAME}" .fasta)
+                    SAMPLE_NAME=$(basename "${INPUT_FILE}" .fasta)
                         ;;
 
                 d ) # Path to diamond directory & associated taxonomy files
