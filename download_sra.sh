@@ -102,6 +102,12 @@ command -v fasterq-dump > /dev/null || \
         fi
     fi
 
+    # Create the output directory; if there is an error in creating in, then exit
+    mkdir -p ${OUTPUT_DIRECTORY} || \
+        { echo "Cannot create directory. Choose different output directory and retry." \
+             "Exiting..." && exit 2
+         }
+
     #==============================================================================================#
     # Temporary directory
     #==============================================================================================#
