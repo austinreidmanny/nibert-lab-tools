@@ -157,7 +157,7 @@ for SAMPLE in ${ALL_SAMPLES[@]}
       -p \
       -t ${TEMP_DIR} \
       -e ${NUM_THREADS} \
-      --mem=${MEMORY_TO_USE} \
+      --mem ${MEMORY_TO_USE} \
       --outdir ${OUTPUT_DIRECTORY} \
       ${SAMPLE}
    done
