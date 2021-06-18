@@ -14,7 +14,7 @@ function usage() {
                   "-o (ouptut directory for saving the SRA files at the end; [default=current folder]) \n" \
                   "-m (maximum amount of memory to use [in GB]; [default=16] ) \n" \
                   "-n (number of CPUs/processors/cores to use; [default=use all available]) \n" \
-                  "-t (temporary directory for storing temp files; [default='/tmp/']) \n\n"
+                  "-t (temporary directory for storing temp files; [default='/tmp/']) \n\n" \
             "Example of a complex run: \n" \
             "$0 -SRR1001,SRR10002 -o ~/Desktop/sra_files/ -m 30 -n 6 -t /tmp/ \n\n" \
             "Exiting program. Please retry with corrected parameters..." >&2; exit 1;
@@ -157,7 +157,7 @@ for SAMPLE in ${ALL_SAMPLES[@]}
       -p \
       -t ${TEMP_DIR} \
       -e ${NUM_THREADS} \
-      --mem=${MEMORY_TO_USE} \
+      --mem ${MEMORY_TO_USE} \
       --outdir ${OUTPUT_DIRECTORY} \
       ${SAMPLE}
    done
