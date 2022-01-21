@@ -26,11 +26,10 @@ import os
 import pandas
 from matplotlib import pyplot
 
-import Bio.SeqRecord
+from Bio import SeqRecord
 from Bio import Seq
 from Bio import AlignIO
 from Bio import SeqIO
-from Bio import Align
 from Bio.Align.Applications import MafftCommandline
 
 
@@ -61,6 +60,9 @@ def extract_peptide_strings(peptides_file):
     # Create an empty list to store all of the peptides
     cleaned_peptides = []
 
+    # Setup an output filename to save the fasta of the cleaned peptides
+    cleaned_peptides_filename = 'cleaned_peptides.fasta'
+
     # Read the file as a DataFrame and extract the uncleaned peptide strings
     peptides_df = pandas.read_csv(peptides_file, sep=',', usecols=['ScanF', 'Peptide']).astype('string')
     peptides_with_ids = dict(peptides_df.values)
@@ -78,12 +80,12 @@ def extract_peptide_strings(peptides_file):
         peptide = peptide.replace('*', '')
 
         # Save the cleaned peptide string
-        cleaned_peptides.append(Bio.SeqRecord.SeqRecord(Seq.Seq(peptide), id=peptide_id))
+        cleaned_peptides.append(SeqRecord.SeqRecord(Seq.Seq(peptide), id=peptide_id))
 
     # Save cleaned peptides to a fasta file
-    SeqIO.write(cleaned_peptides, 'cleaned_peptides.fasta', 'fasta')
+    SeqIO.write(cleaned_peptides, cleaned_peptides_filename, 'fasta')
 
-    return 'cleaned_peptides.fasta'
+    return cleaned_peptides_filename
 
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -117,13 +119,13 @@ def align_sequences(reference_filename, peptides_fasta):
 # ---------------------------------------------------------------------------------------------------------------------
 def visualize_alignment(multiple_sequence_alignment):
 
-    msa = multiple_sequence_alignment
+    """Iterate through the alignment, sequence by sequence
+    If gap (-), that position is a 0, if aa residue, that position is a >1;
+    Now, I want non-overlapping lines, such that every sequence gets its own line;
+    If it's an aa residue, that position will get assigned the sequence_counter value,
+    which increases by 1 every time we look at the next sequence"""
 
-    # Iterate through the alignment, sequence by sequence. If gap (-), that position is a 0;
-    # If aa residue, that position is a >1;
-    # Now, I want non-overlapping lines, such that every sequence gets its own line;
-    # So it's an aa residue, that position will get assigned the sequence_counter value,
-    #   which increases by 1 every time we look at the next sequence
+    msa = multiple_sequence_alignment
 
     sequence_counter = 0
     my_df = pandas.DataFrame(columns=['Sequence_ID', 'Position', 'Value'])
