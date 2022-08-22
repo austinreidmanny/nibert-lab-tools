@@ -60,14 +60,14 @@ function usage() {
                     USER_PROVIDED_OUTPUT_DIRECTORY=${OPTARG}
 
                     if [[ ! -z ${FORWARD_READS} ]] ; then
-                       READS_NAME=`echo ${FORWARD_READS} | sed 's/_[A-Z]*1.f[a-z]*q//'`
+                       READS_NAME=$(basename ${FORWARD_READS} | sed 's/_[A-Z]*1.f[a-z]*q//')
                        
                        if [[ -z ${READS_NAME} ]]; then
                            READS_NAME=${FORWARD_READS}
                        fi
 
                     elif [[ ! -z ${UNPAIRED_READS} ]] ; then
-                       READS_NAME=`echo ${UNPAIRED_READS} | sed 's/.f[a-z]*q//'` 
+                       READS_NAME=$(basename ${UNPAIRED_READS} | sed 's/.f[a-z]*q//')
                        
                        if [[ -z ${READS_NAME} ]]; then
                            READS_NAME=${UNPAIRED_READS}
